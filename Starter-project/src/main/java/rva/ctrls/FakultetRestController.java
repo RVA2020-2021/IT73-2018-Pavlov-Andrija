@@ -24,8 +24,8 @@ import rva.jpa.Fakultet;
 import rva.repository.FakultetRepository;
 
 
-@CrossOrigin
 @RestController
+@CrossOrigin
 @Api(tags = {"Fakultet CRUD operacije"})
 public class FakultetRestController {
 
@@ -38,19 +38,19 @@ public class FakultetRestController {
 	
 	
 	@GetMapping("fakultet")
-	@ApiOperation(value = "Vraća kolekciju svih fakulteta iz baze podataka")
+	@ApiOperation(value = "VraÄ‡a kolekciju svih fakulteta iz baze podataka")
 	public Collection<Fakultet> getFakulteti() {
 		return fakultetRepository.findAll();
 	}
 	
 	@GetMapping("fakultet/{id}")
-	@ApiOperation(value = "Vraća fakultet iz baze podataka čiji je id vrednost prosleđena kao path varijabla")
+	@ApiOperation(value = "VraÄ‡a fakultet iz baze podataka Ä�iji je id vrednost prosleÄ‘ena kao path varijabla")
 	public Fakultet getFakultet(@PathVariable("id") Integer id) {
 		return fakultetRepository.getOne(id);
 	}
 	
 	@GetMapping("fakultetNaziv/{naziv}")
-	@ApiOperation(value = "Vraća kolekciju svih fakulteta iz baze podataka koji u nazivu sadrže string prosleđ kao path varijabla")
+	@ApiOperation(value = "VraÄ‡a kolekciju svih fakulteta iz baze podataka koji u nazivu sadrÅ¾e string prosleÄ‘ kao path varijabla")
 	public Collection<Fakultet> getFakultetByNaziv(@PathVariable("naziv") String naziv) {
 		return fakultetRepository.findByNazivContainingIgnoreCase(naziv);
 	}
@@ -87,6 +87,8 @@ public class FakultetRestController {
 		if(!fakultetRepository.existsById(id)) {
 			return new ResponseEntity<Fakultet>(HttpStatus.NO_CONTENT);
 		}
+		
+		jdbcTemplate.execute("Delete from student where departman in (select id from departman where fakultet= " + id+")"); 
 		
 		jdbcTemplate.execute("DELETE FROM departman WHERE fakultet = " + id);
 		fakultetRepository.deleteById(id);

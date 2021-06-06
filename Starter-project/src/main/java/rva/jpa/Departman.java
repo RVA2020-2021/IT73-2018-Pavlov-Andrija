@@ -36,8 +36,9 @@ public class Departman implements Serializable {
 
 	//bi-directional many-to-one association to Student
 	//@JsonIgnore anotacija ce spreciti da se vraca beskonacna petlja departmana sa ID-jem 1
+	
 	@JsonIgnore
-	@OneToMany(mappedBy="departman")
+	@OneToMany(mappedBy="departman", cascade = {CascadeType.DETACH, CascadeType.REMOVE})
 	private List<Student> students;
 
 	public Departman() {

@@ -6,6 +6,7 @@ import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+
 import java.util.List;
 
 
@@ -29,8 +30,9 @@ public class Status implements Serializable {
 	private String oznaka;
 
 	//bi-directional many-to-one association to Student
+	
 	@JsonIgnore
-	@OneToMany(mappedBy="status")
+	@OneToMany(mappedBy="status", cascade = {CascadeType.DETACH, CascadeType.REMOVE})
 	private List<Student> students;
 
 	public Status() {
