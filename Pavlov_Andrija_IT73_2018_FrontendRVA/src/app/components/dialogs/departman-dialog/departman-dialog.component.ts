@@ -27,7 +27,7 @@ export class DepartmanDialogComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.fakultetService.getAllFakultet()
+    this.subscription = this.fakultetService.getAllFakultet()
       .subscribe(fakulteti => {
         this.fakulteti = fakulteti;
       }),
@@ -46,7 +46,7 @@ export class DepartmanDialogComponent implements OnInit {
 
 
   public add(): void {
-    this.departmanService.addDepartman(this.data)
+    this.subscription = this.departmanService.addDepartman(this.data)
       .subscribe(()=> {
         this.snackBar.open('Uspešno dodat fakultet', 'U redu', {
           duration: 2500
@@ -62,7 +62,7 @@ export class DepartmanDialogComponent implements OnInit {
 
 
   public update(): void {
-    this.departmanService.updateDepartman(this.data)
+    this.subscription = this.departmanService.updateDepartman(this.data)
       .subscribe(()=> {
         this.snackBar.open('Uspešno modifikovan fakultet' + this.data.naziv, 'U redu', {
           duration: 2500
@@ -78,7 +78,7 @@ export class DepartmanDialogComponent implements OnInit {
 
 
     public delete(): void {
-      this.departmanService.deleteDepartman(this.data.id)
+      this.subscription = this.departmanService.deleteDepartman(this.data.id)
         .subscribe(() => {
           this.snackBar.open('Uspešno obrisan fakultet' + this.data.naziv, 'U redu', {
             duration: 2500

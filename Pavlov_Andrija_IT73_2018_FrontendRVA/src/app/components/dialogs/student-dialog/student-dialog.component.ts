@@ -1,3 +1,4 @@
+import { Subscription } from 'rxjs';
 import { StatusService } from './../../../services/status.service';
 import { StudentService } from './../../../services/student.service';
 import { Student } from 'src/app/models/student';
@@ -15,6 +16,7 @@ export class StudentDialogComponent implements OnInit {
 
   statusi: Status[];
   public flag: number;
+  subscription: Subscription;
 
 
   constructor(public snackBar: MatSnackBar,
@@ -25,7 +27,7 @@ export class StudentDialogComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.statusService.getAllStatuses()
+    this.subscription = this.statusService.getAllStatuses()
       .subscribe(statusi => {
         this.statusi = statusi;
       }),
@@ -34,6 +36,9 @@ export class StudentDialogComponent implements OnInit {
       }
   }
 
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
 
   compareTo(a: any, b: any) {
     return a.id === b.id;
@@ -41,7 +46,7 @@ export class StudentDialogComponent implements OnInit {
 
 
   public add(): void {
-    this.studentService.addStudent(this.data)
+    this.subscription = this.studentService.addStudent(this.data)
       .subscribe(() => {
         this.snackBar.open('Uspešno dodat student!', 'U redu', {
           duration: 2500
@@ -53,7 +58,7 @@ export class StudentDialogComponent implements OnInit {
   }
 
   public update(): void {
-    this.studentService.updateStudent(this.data)
+    this.subscription = this.studentService.updateStudent(this.data)
       .subscribe(() => {
         this.snackBar.open('Uspešno modifikovan student!', 'U redu', {
           duration: 2500
@@ -65,7 +70,7 @@ export class StudentDialogComponent implements OnInit {
   }
 
   public delete(): void {
-    this.studentService.deleteStudent(this.data.id)
+    this.subscription = this.studentService.deleteStudent(this.data.id)
       .subscribe(() => {
         this.snackBar.open('Uspešno obrisan student!', 'U redu', {
          duration: 2500

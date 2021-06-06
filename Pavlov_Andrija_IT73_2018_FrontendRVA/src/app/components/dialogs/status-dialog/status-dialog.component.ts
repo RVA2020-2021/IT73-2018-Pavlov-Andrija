@@ -1,3 +1,4 @@
+import { Subscription } from 'rxjs';
 import { StatusService } from './../../../services/status.service';
 
 import { Status } from './../../../models/status';
@@ -17,6 +18,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 export class StatusDialogComponent implements OnInit {
 
   public flag: number;
+  subscription: Subscription;
 
   constructor(public snackBar: MatSnackBar,
               public dialogRef: MatDialogRef<StatusDialogComponent>,
@@ -27,9 +29,12 @@ export class StatusDialogComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
 
   public add(): void {
-    this.statusService.addStatus(this.data)
+    this.subscription = this.statusService.addStatus(this.data)
     .subscribe(() => {
       this.snackBar.open('Uspesno dodat status: ' + this.data.naziv , 'U redu', {
         duration: 2500
@@ -45,7 +50,7 @@ export class StatusDialogComponent implements OnInit {
 
 
   public update(): void {
-    this.statusService.updateStatus(this.data)
+    this.subscription = this.statusService.updateStatus(this.data)
     .subscribe(data => {
       this.snackBar.open('Uspesno modifikovan status: ' + data.naziv, 'U redu', {
         duration: 2500
@@ -60,7 +65,7 @@ export class StatusDialogComponent implements OnInit {
   }
 
   public delete(): void {
-    this.statusService.deleteStatus(this.data.id)
+    this.subscription = this.statusService.deleteStatus(this.data.id)
       .subscribe(() => {
         this.snackBar.open('Uspesno obrisan status: ', 'U redu', {
           duration: 2500
