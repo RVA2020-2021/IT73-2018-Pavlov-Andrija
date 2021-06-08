@@ -8,7 +8,7 @@ import { Departman } from './../../models/departman';
 import { MatTableDataSource } from '@angular/material/table';
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Student } from 'src/app/models/student';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 
 
 @Component({
